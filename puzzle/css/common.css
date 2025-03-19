@@ -1,0 +1,128 @@
+@charset "utf-8";
+body {
+  color: #000;
+  width: 100%;
+  margin: 0 auto;
+}
+input {
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  font-size: 100%;
+}
+h1.title {
+  font-size: 350%;
+}
+a img {
+  border: none;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+a:hover {
+  text-decoration: underline;
+}
+a,
+area {
+  blr: expression(this.onFocus=this.blur());
+}
+:focus {
+  -moz-outline-style: none;
+  hidefocus: hidefocus;
+  outline: none;
+}
+.hide {
+  display: none;
+}
+.title {
+  text-align: center;
+  font-weight: bold;
+  color: #35495e;
+}
+.puzzle{
+  text-align: center;
+  margin: 5px auto;
+  font-size: 150%;
+}
+.rule {
+  width: 1000px;
+  text-align: left;
+  font-size: 150%;
+  margin: auto;
+  line-height: 1.5;
+}
+.rule p {
+  text-indent: 2em;
+}
+#cnzz {
+  display: none;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-around;
+}
+.card-wrap {
+  height: 60vh;
+  width: 100vw;
+  position: relative;
+}
+.container>.card-wrap .card {
+  position: relative;
+  margin: 0 auto;
+  height: 100%;
+  width: 60%;
+  border: 2px solid #35495e;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.container>.card-wrap .card .question-content {
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  justify-content: space-around;
+  position: absolute;
+  width: 100%;
+  height: 20%;
+  top: 20%;
+  text-align: center;
+  font-size: 3vh;
+}
+.container>.card-wrap .card .question-text, .container>.card-wrap .card .title>div {
+  color: #35495e;
+}
+.container>.card-wrap .card .question-content .question-input>input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  border-bottom: 1px solid #000;
+  outline: none;
+  padding: 8px;
+  font-size: 2vh;
+}
+.button {
+  background-color:#0b5ed7;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+.button:hover {
+  background-color: #084298;
+}
+.g-recaptcha {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+}

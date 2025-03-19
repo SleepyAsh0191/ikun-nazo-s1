@@ -1,0 +1,221 @@
+import collections
+
+class MechanicalQueue:
+    """
+    用来模拟一个 '机械式' 的队列。它不是直接用 Python 内置的 queue.Queue，
+    而是用 deque + 一堆啰嗦的函数来进行 'Push' 和 'Pop'。
+    """
+    def __init__(self):
+        self._deque = collections.deque()
+
+    def mechanical_push(self, item):
+        """
+        模拟把一个元素放进机械装置里
+        """
+        print("[MechanicalQueue] 正在打开舱门，将元素放入机械队列:", item)
+        self._deque.append(item)
+        print("[MechanicalQueue] 舱门关闭，元素已就位.")
+
+    def mechanical_pop(self):
+        """
+        模拟用机械装置取出队列首元素
+        """
+        if not self._deque:
+            print("[MechanicalQueue] 队列中已经没有任何元素。")
+            return None
+        print("[MechanicalQueue] 拧动把手，准备弹出一个元素...")
+        item = self._deque.popleft()
+        print(f"[MechanicalQueue] 弹出元素: {item}")
+        return item
+
+    def mechanical_len(self):
+        """
+        模拟测量机械队列长度
+        """
+        length = len(self._deque)
+        print(f"[MechanicalQueue] 正在用卡尺测量队列长度: {length}")
+        return length
+
+    def is_empty(self):
+        return (self.mechanical_len() == 0)
+
+
+def complicated_map(func, iterable):
+    """
+    用一大堆多余的步骤来模拟 map 操作
+    """
+    print("[complicated_map] 进入繁琐的 mapping 流程...")
+    result = []
+    for idx, item in enumerate(iterable):
+        print(f"[complicated_map] 处理第 {idx} 个元素 -> {item}")
+        mapped = func(item)
+        print(f"[complicated_map] 映射结果 -> {mapped}")
+        result.append(mapped)
+    print("[complicated_map] 所有元素映射结束.")
+    return result
+
+
+def complicated_join(sep, iterable):
+    """
+    用多余步骤来模拟 join 操作
+    """
+    print("[complicated_join] 开始执行繁琐的字符串拼接.")
+    # 先把 iterable 映射成 str
+    str_list = complicated_map(str, iterable)
+    # 逐个累加
+    output = ""
+    for idx, s in enumerate(str_list):
+        print(f"[complicated_join] 准备拼接第 {idx} 个字符串: {s}")
+        if output == "":
+            output = s
+        else:
+            output += sep + s
+        print(f"[complicated_join] 当前部分拼接结果: {output}")
+    print("[complicated_join] 拼接结束, 最终结果:", output)
+    return output
+
+
+class RubeGoldbergAdder:
+    def __init__(self):
+        # 用自定义 MechanicalQueue 来管理“事件”
+        self.events = MechanicalQueue()
+        # 结果存放：逆序数字列表
+        self.result = []
+
+    def start(self, a, b):
+        print("[RubeGoldbergAdder] 开始拆分数字...")
+        A = self._complicated_reverse_digits(a)  # 例如 123 -> [3,2,1]
+        B = self._complicated_reverse_digits(b)  # 例如 456 -> [6,5,4]
+        length = max(self._complicated_len(A), self._complicated_len(B))
+
+        # 逐位发起“加法”事件
+        for i in range(length):
+            da = A[i] if i < self._complicated_len(A) else 0
+            db = B[i] if i < self._complicated_len(B) else 0
+            # 投递加法事件
+            self.events.mechanical_push(("add", da, db, 0, i))
+
+        # 进入机械事件循环
+        self._process_events()
+
+        # 去除多余高位 0
+        while self._complicated_len(self.result) > 1 and self.result[-1] == 0:
+            self.result.pop()
+
+        # 把逆序数字拼回整型
+        return int(self._complicated_join_digits(self.result))
+
+    def _process_events(self):
+        """
+        当队列有事件时，一直不停弹出并处理
+        """
+        while not self.events.is_empty():
+            event = self.events.mechanical_pop()
+            if not event:
+                continue
+            etype = event[0]
+            if etype == "add":
+                self._handle_add(*event[1:])
+            elif etype == "carry":
+                self._handle_carry(*event[1:])
+            else:
+                print("[RubeGoldbergAdder] 未知事件类型:", etype)
+
+    def _handle_add(self, digit_a, digit_b, carry_in, idx):
+        s = digit_a + digit_b + carry_in
+        digit = s % 10
+        carry_out = s // 10
+
+        self._store_digit(idx, digit)
+
+        if carry_out > 0:
+            self.events.mechanical_push(("carry", carry_out, idx + 1))
+
+    def _handle_carry(self, carry_val, idx):
+        if idx >= self._complicated_len(self.result):
+            self._expand_result(idx - self._complicated_len(self.result) + 1)
+        s = self.result[idx] + carry_val
+        digit = s % 10
+        carry_out = s // 10
+        self.result[idx] = digit
+        if carry_out > 0:
+            self.events.mechanical_push(("carry", carry_out, idx + 1))
+
+    def _store_digit(self, idx, digit):
+        if idx >= self._complicated_len(self.result):
+            self._expand_result(idx - self._complicated_len(self.result) + 1)
+        self.result[idx] = digit
+
+    def _expand_result(self, n):
+        print(f"[RubeGoldbergAdder] 扩展 result 列表，长度增加 {n}")
+        self.result.extend([0]*n)
+
+    # -------- 一堆“复杂化”的工具函数 --------
+
+    def _complicated_reverse_digits(self, num):
+        """
+        将一个数字逆序地拆分成列表
+        例如 123 -> [3,2,1]
+        """
+        print(f"[RubeGoldbergAdder] 正在逆序拆分数字: {num}")
+        digits_str = str(num)
+        reversed_list = []
+        # 从尾到头遍历
+        for i in reversed(range(len(digits_str))):
+            reversed_list.append(int(digits_str[i]))
+        print(f"[RubeGoldbergAdder] 逆序结果: {reversed_list}")
+        return reversed_list
+
+    def _complicated_len(self, arr):
+        """
+        用复杂化过程来获取一个列表的长度
+        """
+        print("[RubeGoldbergAdder] 开始测量列表长度...")
+        count = 0
+        for _ in arr:  # 模拟“测量”，循环一遍
+            count += 1
+        print("[RubeGoldbergAdder] 测量结束，长度为:", count)
+        return count
+
+    def _complicated_join_digits(self, arr):
+        """
+        用 complicated_join 把数字列表逆序拼成字符串
+        再转成 int
+        """
+        print("[RubeGoldbergAdder] 准备拼接结果数字列表为字符串(逆序 -> 正序).")
+        # arr 现在是逆序，要先翻转过来
+        reversed_arr = self._complicated_reverse_list(arr)
+        joined_str = complicated_join("", reversed_arr)  # 不加分隔符
+        print("[RubeGoldbergAdder] 拼接后结果字符串:", joined_str)
+        return joined_str
+
+    def _complicated_reverse_list(self, arr):
+        """
+        人为拆分，模拟一个“机械式”地翻转列表
+        """
+        print("[RubeGoldbergAdder] 准备机械式翻转列表:", arr)
+        new_list = []
+        idx = self._complicated_len(arr) - 1
+        while idx >= 0:
+            new_list.append(arr[idx])
+            idx -= 1
+        print("[RubeGoldbergAdder] 翻转后的列表:", new_list)
+        return new_list
+
+
+def rube_goldberg_add(a, b):
+    """
+    提供给外部调用的简化接口，但内部依旧超级复杂.
+    """
+    print("\n========== 启动鲁布·戈德堡复杂加法机 ==========")
+    machine = RubeGoldbergAdder()
+    result = machine.start(a, b)
+    print("========== 复杂加法机结束运行 ==========\n")
+    return result
+
+
+# ---------------------- 测试演示 ----------------------
+if __name__ == "__main__":
+    x1, x2 = 12354637347, 123456765432
+    res2 = rube_goldberg_add(x1, x2)
+    print(f"{x1} + {x2} = {res2} ; 是否正确？", res2 == (x1 + x2))

@@ -1,0 +1,40 @@
+function transformText(input) {
+        if (input.includes('答案')) {
+            if (input.includes('奶奶')) {
+                if (input.includes('去世') || input.includes('过世') || input.includes('死去') || input.includes('离去')){
+                    return '好啊，从前有个人，他说答案是/11m-lm-1m-lm-k0sh17antan';
+                }
+                return '我是你爹，没有答案！';
+            }
+
+
+            return '关我什么事？';
+        }
+        if (input.includes('奶奶')) {
+            return '我是你爹！';
+        }
+
+        let text = input.replace(/你好/g, 'TEMP_HI');
+        text = text.replace(/你/g, 'TEMP_YOU').replace(/我/g, '你').replace(/TEMP_YOU/g, '我');
+        text = text.replace(/是不是/g, '是');
+        text = text.replace(/TEMP_HI/g, '你好');
+        if (text.match(/吗[？?]$/)) {
+            text = text.replace(/吗[？?]$/, '!');
+        } else if (text.match(/吗$/)) {
+            text = text.replace(/吗$/, '!');
+        } else if (text.match(/[？?]$/)) {
+            text = text.replace(/[？?]$/, '!');
+        } else {
+            text += '!';
+        }
+        return text;
+    }
+
+    $(document).ready(function () {
+        $('#submit-button').on('click', function (event) {
+            event.preventDefault();
+            var inputValue = $('#prompt').val();
+            output = transformText(inputValue);
+            $('#response').text(output);
+        });
+    });
